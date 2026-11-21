@@ -6,16 +6,44 @@
 <title>Playlist Tinder · YouTube Music</title>
 <style>
 :root{color-scheme:dark;--bg:#101014;--panel:#1c1c24;--muted:#a7a7b5;--text:#f7f7fb;--pink:#ff5470;--green:#43d6a0;--line:#333340}
-*{box-sizing:border-box}body{margin:0;background:#08080c;color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-main{width:min(720px,100%);margin:auto;padding:12px 12px 28px}.top{text-align:center;margin:8px 0 22px}.top h1{margin:0;font-size:clamp(28px,6vw,42px)}.top p{color:var(--muted);margin:8px 0}
+*{box-sizing:border-box}body{margin:0;background:#08080c;color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;overflow-x:hidden}
+main{width:100%;max-width:720px;margin:auto;padding:10px 12px 28px}.top{text-align:center;margin:8px 0 16px}.top h1{margin:0;font-size:clamp(25px,6vw,34px);letter-spacing:-1.2px}.top h1 span{color:#ff5277}.top p{color:var(--muted);margin:5px 0;font-size:13px}
 .panel{background:#15151c;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 60px #0006}
 button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;background:#eee;color:#15151a}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:#ff3158;color:white}.secondary{background:#333340;color:white}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.field{width:100%;padding:13px;border-radius:12px;border:1px solid #454552;background:#111118;color:white;margin:7px 0 12px}.hint{color:var(--muted);font-size:13px;line-height:1.5}.hidden{display:none!important}
-#status{margin:12px 0;color:#ddd;min-height:22px}.track{margin:8px auto 10px;max-width:560px;text-align:center}.swipe-stage{position:relative;width:min(100%,min(88vw,520px));margin:auto;touch-action:pan-y;user-select:none;overflow:visible}.art{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;background:#30303a;box-shadow:0 14px 40px #0007;transition:transform .18s ease,opacity .18s ease;will-change:transform;pointer-events:none}.swipe-stamp{position:absolute;top:18px;padding:8px 13px;border:3px solid;border-radius:10px;font-weight:900;font-size:20px;letter-spacing:2px;opacity:0;pointer-events:none}.swipe-stamp.keep-stamp{left:14px;color:#43d6a0;border-color:#43d6a0;transform:rotate(-12deg)}.swipe-stamp.remove-stamp{right:14px;color:#ff7388;border-color:#ff7388;transform:rotate(12deg)}.track h2{font-size:23px;margin:14px 0 4px}.track .artist{color:var(--muted);margin:0 0 12px}.preview{width:100%;height:116px;border:0;border-radius:14px;background:#000;margin:10px 0}.actions{display:none}.swipe{width:68px;height:68px;border-radius:50%;font-size:27px;display:grid;place-items:center}.keep{background:#173f35;color:var(--green);border:1px solid #276c58}.remove{background:#48212a;color:#ff7388;border:1px solid #803344}.progress{height:8px;background:#333340;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#ff5470,#9c77ff);width:0}.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:8px 0}
-#summary{white-space:pre-wrap;color:#ddd;font-size:14px}.small{font-size:12px;color:var(--muted)}a{color:#c8a8ff}.meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;color:#c3c3ce;font-size:13px;margin:8px 0 12px}.meta span{background:#22222b;padding:6px 10px;border-radius:999px}.review-shell{border:0;background:transparent;box-shadow:none;padding:0}.review-shell .stats{padding:4px 4px}.review-shell .track{padding:0 0 8px}.track h2{font-size:clamp(20px,5vw,27px);margin:12px 0 3px}.track .artist{font-size:15px}.swipe-stage.swiping .art{filter:brightness(.88)}.player-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#9d9daa;text-align:left;margin:12px 2px 4px}.subactions{display:flex;justify-content:center;gap:10px;margin:8px 0 12px}.subactions button{background:#24242e;color:#eee;border:1px solid #3c3c49;font-size:13px}.swipe-stamp{z-index:2}
+#status{margin:12px 0;color:#ddd;min-height:22px}.track{margin:8px auto 10px;max-width:560px;text-align:center}.swipe-stage{position:relative;width:min(100%,min(91vw,500px));margin:auto;touch-action:pan-y;user-select:none;overflow:visible;isolation:isolate}.art{display:block;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;border-radius:0;background:#17131b;box-shadow:none;transition:transform .18s ease,opacity .18s ease;will-change:transform;pointer-events:none}.swipe-stamp{position:absolute;top:24px;padding:9px 15px;border:3px solid;border-radius:12px;font-weight:950;font-size:clamp(17px,4vw,23px);letter-spacing:2px;opacity:0;pointer-events:none;text-shadow:0 2px 10px #0008;box-shadow:0 4px 18px #0005}.swipe-stamp.keep-stamp{left:14px;color:#43d6a0;border-color:#43d6a0;transform:rotate(-12deg)}.swipe-stamp.remove-stamp{right:14px;color:#ff7388;border-color:#ff7388;transform:rotate(12deg)}.track h2{font-size:23px;margin:14px 0 4px}.track .artist{color:var(--muted);margin:0 0 12px}.preview{width:200px;height:200px;border:0;position:fixed;left:-220px;bottom:0;opacity:.01;pointer-events:none}.actions{display:none}.swipe{width:68px;height:68px;border-radius:50%;font-size:27px;display:grid;place-items:center}.keep{background:#173f35;color:var(--green);border:1px solid #276c58}.remove{background:#48212a;color:#ff7388;border:1px solid #803344}.progress{height:8px;background:#333340;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#ff5470,#9c77ff);width:0}.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:8px 0}
+#summary{white-space:pre-wrap;color:#ddd;font-size:14px}.small{font-size:12px;color:var(--muted)}a{color:#c8a8ff}.meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;color:#c3c3ce;font-size:13px;margin:8px 0 12px}.meta span{background:#22222b;padding:6px 10px;border-radius:999px}.review-shell{border:0;background:transparent;box-shadow:none;padding:0}.review-shell .stats{padding:4px 4px}.review-shell .track{padding:0 0 8px}.track h2{font-size:clamp(20px,5vw,27px);margin:12px 0 3px}.track .artist{font-size:15px}.swipe-stage.swiping .art{filter:brightness(.88)}.player-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#9d9daa;text-align:left;margin:12px 2px 4px}.subactions{display:flex;justify-content:center;align-items:center;gap:18px;margin:17px 0 12px}.subactions button{width:58px;height:58px;border-radius:50%;padding:0;background:#20202a;color:#eee;border:1px solid #41414f;font-size:23px;box-shadow:0 8px 24px #0007}.subactions button#undo{width:44px;height:44px;font-size:18px}.subactions button#unsure{width:48px;height:48px;font-size:17px}.swipe-stamp{z-index:2}.review-toolbar{position:sticky;top:0;z-index:20;margin:0 -12px 12px;padding:9px 14px;background:#100d13eF;backdrop-filter:blur(16px);border-bottom:1px solid #ffffff18;display:flex;align-items:center;justify-content:space-between;gap:10px}.review-toolbar .save-button{border-radius:999px;padding:11px 18px;background:linear-gradient(110deg,#ff416c,#ff7657);color:white;box-shadow:0 6px 22px #ff416c44;font-size:14px}.review-toolbar .save-button:disabled{opacity:.55}.review-toolbar .pending{font-size:12px;color:#c9c5cf}.review-shell .track h2{font-weight:800;letter-spacing:-.5px}.review-shell .artist{color:#e0dce5}.review-shell .meta span{background:#24202a;border:1px solid #ffffff12}.progress{height:5px;background:#29232d}.progress>div{background:linear-gradient(90deg,#ff416c,#ff8a55)}.top-mark{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#ff7894;font-weight:800}
+
+/* Immersive full-screen Tinder card */
+@media (max-width: 800px){
+ body:has(#review:not(.hidden)){overflow:hidden}
+ main:has(#review:not(.hidden)){padding:0;max-width:none;height:100dvh}
+ main:has(#review:not(.hidden))>.top{display:none}
+ #review.review-shell{position:fixed;inset:0;z-index:10;width:100vw;height:100dvh;margin:0;padding:0;border:0;border-radius:0;background:#08080c;overflow:hidden}
+ #review .stats{position:absolute;top:58px;left:18px;right:18px;z-index:5;color:#fff;text-shadow:0 1px 8px #000;font-weight:700}
+ #review .progress{position:absolute;top:94px;left:18px;right:18px;z-index:5;background:#ffffff55}
+ #review .track{position:absolute;inset:0;margin:0;max-width:none;padding:0}
+ #review .swipe-stage{position:absolute;inset:0;width:100%;height:100%;margin:0;overflow:hidden}
+ #review .art{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;border-radius:0;filter:brightness(.83)}
+ #review .swipe-stage:after{content:"";position:absolute;inset:25% 0 0;background:linear-gradient(180deg,transparent 0%,#09070be0 68%,#09070b 100%);pointer-events:none}
+ #review .swipe-stamp{top:18%;z-index:4;font-size:clamp(22px,7vw,36px);padding:10px 18px}
+ #review h2,#review .artist,#review .meta{position:absolute;left:22px;right:22px;z-index:5;text-align:left}
+ #review h2{bottom:194px;font-size:clamp(25px,7vw,36px);line-height:1.1;margin:0;text-shadow:0 2px 12px #000}
+ #review .artist{bottom:163px;margin:0;font-size:16px;color:#f0eaf2}
+ #review .meta{bottom:125px;justify-content:flex-start;margin:0}
+ #review .meta span{background:#ffffff20;border:1px solid #ffffff30;color:#fff;backdrop-filter:blur(10px)}
+ #review .player-label,#review .hint{display:none}
+ #review .subactions{position:absolute;z-index:6;bottom:32px;left:0;right:0;margin:0;gap:22px}
+ #review .subactions button{width:62px;height:62px;background:#17131bdc;border:1px solid #ffffff35;backdrop-filter:blur(12px);font-size:25px}
+ #review .subactions button#removeTap{color:#ff6682;width:70px;height:70px;font-size:30px}
+ #review .subactions button#keepTap{color:#53e0ad;width:70px;height:70px;font-size:28px}
+ #review .subactions button#undo,#review .subactions button#unsure{width:48px;height:48px;font-size:18px}
+ #reviewToolbar{position:fixed;top:0;left:0;right:0;margin:0;padding:10px 14px;background:#09070b99;border:0;backdrop-filter:blur(14px);z-index:30}
+ #reviewToolbar .pending{color:#fff;text-shadow:0 1px 6px #000}
+}
 </style>
 </head>
 <body><main>
-<header class="top"><h1>Playlist Tinder <span aria-hidden="true">♫</span></h1><p>Seu YouTube Music, faixa por faixa.</p></header>
+<header class="top"><div class="top-mark">DESCUBRA SUA PRÓXIMA FAVORITA</div><h1>Playlist Tinder <span aria-hidden="true">♥</span></h1><p>Ouça. Deslize. Organize sua playlist.</p></header>
 <section class="panel" id="setup">
 <h2>Conectar playlist</h2>
 <p class="hint">Entre com sua conta Google e cole o link da playlist do YouTube Music. A ferramenta lista as faixas e permite manter ou remover cada uma. A remoção é aplicada à playlist do YouTube depois da confirmação final.</p>
@@ -28,6 +56,10 @@ button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;f
 <p class="hint">Você não precisa editar o arquivo. Basta colar aqui seu ID OAuth uma única vez. O navegador pode guardar esse ID neste dispositivo.</p>
 </section>
 <div id="status" role="status"></div>
+<div class="review-toolbar hidden" id="reviewToolbar">
+ <span class="pending" id="pendingCount">0 alterações pendentes</span>
+ <button class="save-button" id="saveTop">Salvar alterações</button>
+</div>
 <section class="panel hidden review-shell" id="review">
 <div class="stats"><span id="count">0 músicas</span><span id="decisions">0 decididas</span></div><div class="progress"><div id="bar"></div></div>
 <div class="track">
@@ -36,14 +68,14 @@ button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;f
 <div class="meta"><span id="album">Álbum não informado</span><span id="channel">YouTube Music</span></div>
 <div class="player-label">Tocando nesta página</div>
 <iframe class="preview" id="player" title="Player da música" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-<p class="hint">Deslize para a esquerda para manter ou para a direita para marcar para remover. A playlist só será alterada no final.</p>
-<div class="subactions"><button id="unsure">Ainda estou em dúvida</button><button id="undo">Desfazer</button></div>
+<p class="hint">Deslize para a esquerda para manter ou para a direita para marcar para remover. Nada será alterado na playlist até você tocar em “Salvar alterações” no topo.</p>
+<div class="subactions"><button id="undo" aria-label="Desfazer" title="Desfazer">↶</button><button id="removeTap" aria-label="Marcar para remover" title="Marcar para remover">✕</button><button id="unsure" aria-label="Deixar para depois" title="Deixar para depois">?</button><button id="keepTap" aria-label="Manter" title="Manter">♥</button></div>
 </div>
 </section>
 <section class="panel hidden" id="finish">
 <h2>Revisão concluída</h2><p id="summary"></p>
-<p class="hint">Nada foi removido ainda. As faixas marcadas serão removidas da playlist original somente quando você confirmar aqui. As músicas em dúvida continuam na playlist.</p>
-<button class="primary" id="apply">Confirmar remoções na playlist</button>
+<p class="hint">Nada foi removido ainda. As faixas marcadas só serão removidas da playlist original quando você tocar em “Salvar alterações” no topo e confirmar. As músicas em dúvida continuam na playlist.</p>
+<button class="primary" id="apply">Confirmar e salvar remoções</button>
 <button class="secondary" id="back">Voltar à revisão</button>
 </section>
 <section class="panel" style="margin-top:16px">
@@ -97,8 +129,13 @@ $("load").onclick=async()=>{
 };
 function render(){
  const done=decisions.filter(x=>x!==null).length, t=tracks[index];
+ const pending=decisions.filter(x=>x==="remove").length;
+ $("pendingCount").textContent=`${pending} remoção(ões) pendente(s)`;
+ $("saveTop").textContent=pending?`Salvar alterações · ${pending}`:"Salvar alterações";
+ $("reviewToolbar").classList.toggle("hidden",!tracks.length || !accessToken);
+ $("saveTop").disabled=pending===0;
  if(!t){
-  $("review").classList.add("hidden");$("finish").classList.remove("hidden");
+  $("review").classList.add("hidden");$("finish").classList.remove("hidden");$("reviewToolbar").classList.toggle("hidden",!accessToken);
   const rm=decisions.filter(x=>x==="remove").length, unsure=decisions.filter(x=>x===null).length;
   $("summary").textContent=`${tracks.length} músicas analisadas.\\n${tracks.length-rm-unsure} para manter.\\n${rm} marcadas para remover.\\n${unsure} deixadas em dúvida (continuam na playlist).`;
   $("player").src="about:blank";return;
@@ -106,10 +143,18 @@ function render(){
  $("count").textContent=`Música ${index+1} de ${tracks.length}`;$("decisions").textContent=`${done} decididas`;$("bar").style.width=(done/tracks.length*100)+"%";
  $("art").src=t.thumb;$("title").textContent=t.title;$("artist").textContent=t.artist;
  $("album").textContent=t.album;$("channel").textContent=t.channel;
- // O navegador pode bloquear autoplay com áudio até o usuário tocar em Play uma vez.
- $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?autoplay=1&mute=0&playsinline=1&controls=1&rel=0&enablejsapi=1";
+ // Solicita reprodução automática com áudio. O navegador ainda pode bloquear a primeira reprodução.
+ $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?autoplay=1&mute=0&playsinline=1&controls=0&rel=0&enablejsapi=1";
  $("art").style.transform="translateX(0) rotate(0)";$("art").style.opacity="1";$("keepStamp").style.opacity="0";$("removeStamp").style.opacity="0";
 }
+let audioGestureUnlocked=false;
+function retryCurrentAudio(){
+ if(audioGestureUnlocked || !tracks[index])return;
+ audioGestureUnlocked=true;
+ const t=tracks[index];
+ $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?autoplay=1&mute=0&playsinline=1&controls=0&rel=0&enablejsapi=1";
+}
+document.addEventListener("pointerdown",retryCurrentAudio,{once:true});
 function decide(v){if(!tracks[index])return;history.push({index,value:decisions[index]});decisions[index]=v;index++;render()}
 // Arraste real da capa: esquerda = manter; direita = remover.
 let dragStartX=null, dragDelta=0, dragging=false;
@@ -137,15 +182,18 @@ function finishDrag(){
 stage.addEventListener("pointerup",finishDrag);
 stage.addEventListener("pointercancel",finishDrag);
 $("unsure").onclick=()=>{if(!tracks[index])return;history.push({index,value:decisions[index]});decisions[index]=null;index++;render()};
+$("removeTap").onclick=()=>decide("remove");
+$("keepTap").onclick=()=>decide("keep");
+$("saveTop").onclick=()=>$("apply").click();
 $("undo").onclick=()=>{const h=history.pop();if(!h){status("Nada para desfazer.");return}index=h.index;decisions[h.index]=h.value;render()};
-$("back").onclick=()=>{$("finish").classList.add("hidden");$("review").classList.remove("hidden");index=Math.max(0,tracks.length-1);while(index>=0&&decisions[index]!==null)index--;if(index<0)index=tracks.length-1;render()};
+$("back").onclick=()=>{$("finish").classList.add("hidden");$("review").classList.remove("hidden");$("reviewToolbar").classList.remove("hidden");index=Math.max(0,tracks.length-1);while(index>=0&&decisions[index]!==null)index--;if(index<0)index=tracks.length-1;render()};
 $("apply").onclick=async()=>{
  const removals=tracks.filter((t,i)=>decisions[i]==="remove");
  if(!removals.length){status("Nenhuma música marcada para remoção.");return}
  if(!confirm(`Remover ${removals.length} música(s) desta playlist? Esta ação altera sua playlist no YouTube.`))return;
  $("apply").disabled=true;let done=0;
  try{for(const t of removals){await api("playlistItems?id="+encodeURIComponent(t.itemId),{method:"DELETE"});done++}
- status(`${done} música(s) removida(s) da playlist.`);$("apply").textContent="Remoções aplicadas";
+ status(`${done} música(s) removida(s) da playlist.`);for(let i=0;i<decisions.length;i++){if(decisions[i]==="remove")decisions[i]="keep"}$("apply").textContent="Remoções aplicadas";$("saveTop").textContent="Alterações salvas";$("saveTop").disabled=true;$("pendingCount").textContent="Tudo salvo";
  }catch(e){status(`Foram removidas ${done} de ${removals.length}. Erro: ${e.message}`);$("apply").disabled=false}
 };
 </script></body></html>
