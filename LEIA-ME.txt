@@ -1,0 +1,17 @@
+# Playlist Tinder PWA
+
+## Publicar no GitHub Pages
+1. Extraia este ZIP.
+2. Envie **todos** os arquivos e a pasta `icons` para a raiz do repositório GitHub Pages (mantenha os nomes e pastas).
+3. Ative GitHub Pages em Settings → Pages → Deploy from a branch → branch `main` → folder `/ (root)`.
+4. Abra a URL HTTPS publicada no Chrome do Android.
+5. No Google Cloud, adicione a origem HTTPS exata do GitHub Pages em Authorized JavaScript origins. Exemplo: `https://SEUUSUARIO.github.io`. Não inclua `/nome-do-repositorio/` nesse campo.
+6. No Chrome, menu ⋮ → Instalar app (ou Adicionar à tela inicial).
+
+## Testar localmente
+Não abra `index.html` por `file://`. Rode um servidor local, por exemplo com VS Code + extensão Live Server, ou `python -m http.server 5500`. Acesse `http://localhost:5500` e cadastre essa origem no OAuth Client do Google Cloud.
+
+## Importante
+- O login Google e as chamadas da YouTube Data API precisam de internet. O cache offline guarda apenas a estrutura do app e os dados locais já salvos pelo próprio app; ele não torna a API do YouTube offline.
+- O Service Worker e a instalação PWA exigem HTTPS (localhost é aceito para desenvolvimento).
+- O Client ID existente foi mantido. Nenhum Client Secret deve ser colocado no HTML.
