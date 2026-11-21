@@ -10,7 +10,7 @@
 main{width:min(720px,100%);margin:auto;padding:24px 16px 48px}.top{text-align:center;margin:8px 0 22px}.top h1{margin:0;font-size:clamp(28px,6vw,42px)}.top p{color:var(--muted);margin:8px 0}
 .panel{background:#1b1b23dd;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 60px #0006}
 button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;background:#eee;color:#15151a}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:#ff3158;color:white}.secondary{background:#333340;color:white}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.field{width:100%;padding:13px;border-radius:12px;border:1px solid #454552;background:#111118;color:white;margin:7px 0 12px}.hint{color:var(--muted);font-size:13px;line-height:1.5}.hidden{display:none!important}
-#status{margin:12px 0;color:#ddd;min-height:22px}.track{margin:16px auto 12px;max-width:440px;text-align:center}.art{width:min(100%,340px);aspect-ratio:1;object-fit:cover;border-radius:18px;background:#30303a;box-shadow:0 14px 40px #0007}.track h2{font-size:23px;margin:14px 0 4px}.track .artist{color:var(--muted);margin:0 0 12px}.preview{width:100%;height:80px;border:0;border-radius:12px;background:#000;margin:10px 0}.actions{display:flex;justify-content:center;gap:24px;margin:18px 0}.swipe{width:68px;height:68px;border-radius:50%;font-size:27px;display:grid;place-items:center}.keep{background:#173f35;color:var(--green);border:1px solid #276c58}.remove{background:#48212a;color:#ff7388;border:1px solid #803344}.progress{height:8px;background:#333340;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#ff5470,#9c77ff);width:0}.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:8px 0}
+#status{margin:12px 0;color:#ddd;min-height:22px}.track{margin:16px auto 12px;max-width:440px;text-align:center}.swipe-stage{position:relative;width:min(100%,340px);margin:auto;touch-action:pan-y;user-select:none}.art{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;background:#30303a;box-shadow:0 14px 40px #0007;transition:transform .18s ease,opacity .18s ease;will-change:transform;pointer-events:none}.swipe-stamp{position:absolute;top:18px;padding:8px 13px;border:3px solid;border-radius:10px;font-weight:900;font-size:20px;letter-spacing:2px;opacity:0;pointer-events:none}.swipe-stamp.keep-stamp{left:14px;color:#43d6a0;border-color:#43d6a0;transform:rotate(-12deg)}.swipe-stamp.remove-stamp{right:14px;color:#ff7388;border-color:#ff7388;transform:rotate(12deg)}.track h2{font-size:23px;margin:14px 0 4px}.track .artist{color:var(--muted);margin:0 0 12px}.preview{width:100%;height:210px;border:0;border-radius:12px;background:#000;margin:10px 0}.actions{display:flex;justify-content:center;gap:24px;margin:18px 0}.swipe{width:68px;height:68px;border-radius:50%;font-size:27px;display:grid;place-items:center}.keep{background:#173f35;color:var(--green);border:1px solid #276c58}.remove{background:#48212a;color:#ff7388;border:1px solid #803344}.progress{height:8px;background:#333340;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#ff5470,#9c77ff);width:0}.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:8px 0}
 #summary{white-space:pre-wrap;color:#ddd;font-size:14px}.small{font-size:12px;color:var(--muted)}a{color:#c8a8ff}
 </style>
 </head>
@@ -31,10 +31,10 @@ button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;f
 <section class="panel hidden" id="review">
 <div class="stats"><span id="count">0 músicas</span><span id="decisions">0 decididas</span></div><div class="progress"><div id="bar"></div></div>
 <div class="track">
-<img class="art" id="art" alt="Capa da música">
+<div class="swipe-stage" id="swipeStage"><img class="art" id="art" alt="Capa da música"><span class="swipe-stamp keep-stamp" id="keepStamp">MANTER</span><span class="swipe-stamp remove-stamp" id="removeStamp">REMOVER</span></div>
 <h2 id="title">Carregando...</h2><p class="artist" id="artist"></p>
-<iframe class="preview" id="player" title="Prévia da música" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-<p class="hint">← manter · remover →</p>
+<iframe class="preview" id="player" title="Player da música" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<p class="hint">Arraste a capa: ← manter · remover →. Use o player abaixo para ouvir sem sair do site.</p>
 <div class="actions"><button class="swipe keep" id="keep" aria-label="Manter">←</button><button class="swipe remove" id="remove" aria-label="Remover">→</button></div>
 </div>
 <div class="row"><button class="secondary" id="undo">Desfazer última</button><button class="secondary" id="skip">Pular por enquanto</button></div>
@@ -88,6 +88,8 @@ $("load").onclick=async()=>{
  try{const id=extractId($("playlist").value);if(!id)throw Error("Cole o link da playlist.");status("Carregando músicas...");
  let all=[],pageToken="";do{const q=new URLSearchParams({part:"snippet,contentDetails",playlistId:id,maxResults:"50"});if(pageToken)q.set("pageToken",pageToken);const data=await api("playlistItems?"+q);all.push(...(data.items||[]));pageToken=data.nextPageToken||"";}while(pageToken);
  tracks=all.map(x=>({itemId:x.id,videoId:x.contentDetails?.videoId,title:x.snippet?.title||"Faixa sem título",artist:x.snippet?.videoOwnerChannelTitle||x.snippet?.channelTitle||"Artista não informado",thumb:x.snippet?.thumbnails?.high?.url||x.snippet?.thumbnails?.medium?.url||x.snippet?.thumbnails?.default?.url||""})).filter(x=>x.videoId);
+ // Embaralha a ordem de análise sem alterar a ordem original da playlist.
+ for(let i=tracks.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[tracks[i],tracks[j]]=[tracks[j],tracks[i]];}
  if(!tracks.length)throw Error("Não encontrei faixas nessa playlist. Verifique o link e as permissões.");
  index=0;decisions=Array(tracks.length).fill(null);history=[];$("setup").classList.add("hidden");$("review").classList.remove("hidden");$("finish").classList.add("hidden");render();status("");
  }catch(e){status("Erro: "+e.message)}
@@ -97,18 +99,36 @@ function render(){
  if(!t){$("review").classList.add("hidden");$("finish").classList.remove("hidden");const rm=decisions.filter(x=>x==="remove").length;$("summary").textContent=`${tracks.length} músicas analisadas.\n${tracks.length-rm} para manter.\n${rm} para remover.`;return}
  $("count").textContent=`Música ${index+1} de ${tracks.length}`;$("decisions").textContent=`${done} decididas`;$("bar").style.width=(done/tracks.length*100)+"%";
  $("art").src=t.thumb;$("title").textContent=t.title;$("artist").textContent=t.artist;
- $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?rel=0&playsinline=1";
+ $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?rel=0&playsinline=1&controls=1&iv_load_policy=3";
+ $("art").style.transform="translateX(0) rotate(0)";$("art").style.opacity="1";$("keepStamp").style.opacity="0";$("removeStamp").style.opacity="0";
 }
 function decide(v){if(!tracks[index])return;history.push({index,value:decisions[index]});decisions[index]=v;index++;render()}
 $("keep").onclick=()=>decide("keep");$("remove").onclick=()=>decide("remove");
-// Gestos: arrastar para a esquerda mantém; para a direita marca para remover.
-let swipeStartX=null;
-$("art").addEventListener("touchstart",e=>{swipeStartX=e.changedTouches[0].clientX},{passive:true});
-$("art").addEventListener("touchend",e=>{
- if(swipeStartX===null)return;
- const dx=e.changedTouches[0].clientX-swipeStartX;swipeStartX=null;
- if(Math.abs(dx)>65)decide(dx<0?"keep":"remove");
-},{passive:true});
+// Arraste real da capa: esquerda = manter; direita = remover.
+let dragStartX=null, dragDelta=0, dragging=false;
+const stage=$("swipeStage"), art=$("art");
+stage.addEventListener("pointerdown",e=>{
+ if(!tracks[index])return;
+ dragStartX=e.clientX;dragDelta=0;dragging=true;stage.setPointerCapture(e.pointerId);
+});
+stage.addEventListener("pointermove",e=>{
+ if(!dragging)return;
+ dragDelta=e.clientX-dragStartX;
+ art.style.transition="none";
+ art.style.transform=`translateX(${dragDelta}px) rotate(${dragDelta/18}deg)`;
+ $("keepStamp").style.opacity=dragDelta<0?Math.min(1,Math.abs(dragDelta)/90):0;
+ $("removeStamp").style.opacity=dragDelta>0?Math.min(1,dragDelta/90):0;
+});
+function finishDrag(){
+ if(!dragging)return;
+ dragging=false;art.style.transition="transform .18s ease,opacity .18s ease";
+ if(dragDelta < -85){art.style.transform="translateX(-120%) rotate(-18deg)";setTimeout(()=>decide("keep"),130);}
+ else if(dragDelta > 85){art.style.transform="translateX(120%) rotate(18deg)";setTimeout(()=>decide("remove"),130);}
+ else {art.style.transform="translateX(0) rotate(0)";$("keepStamp").style.opacity="0";$("removeStamp").style.opacity="0";}
+ dragStartX=null;dragDelta=0;
+}
+stage.addEventListener("pointerup",finishDrag);
+stage.addEventListener("pointercancel",finishDrag);
 $("skip").onclick=()=>{if(index<tracks.length)index++;render()};
 $("undo").onclick=()=>{const h=history.pop();if(!h){status("Nada para desfazer.");return}index=h.index;decisions[h.index]=h.value;render()};
 $("back").onclick=()=>{$("finish").classList.add("hidden");$("review").classList.remove("hidden");index=Math.max(0,tracks.length-1);while(index>=0&&decisions[index]!==null)index--;if(index<0)index=tracks.length-1;render()};
