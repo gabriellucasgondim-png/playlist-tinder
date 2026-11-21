@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Playlist Tinder · YouTube Music</title>
+<style>
+:root{color-scheme:dark;--bg:#101014;--panel:#1c1c24;--muted:#a7a7b5;--text:#f7f7fb;--pink:#ff5470;--green:#43d6a0;--line:#333340}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#292039 0,#101014 55%);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+main{width:min(720px,100%);margin:auto;padding:24px 16px 48px}.top{text-align:center;margin:8px 0 22px}.top h1{margin:0;font-size:clamp(28px,6vw,42px)}.top p{color:var(--muted);margin:8px 0}
+.panel{background:#1b1b23dd;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 60px #0006}
+button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;background:#eee;color:#15151a}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:#ff3158;color:white}.secondary{background:#333340;color:white}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.field{width:100%;padding:13px;border-radius:12px;border:1px solid #454552;background:#111118;color:white;margin:7px 0 12px}.hint{color:var(--muted);font-size:13px;line-height:1.5}.hidden{display:none!important}
+#status{margin:12px 0;color:#ddd;min-height:22px}.track{margin:16px auto 12px;max-width:440px;text-align:center}.art{width:min(100%,340px);aspect-ratio:1;object-fit:cover;border-radius:18px;background:#30303a;box-shadow:0 14px 40px #0007}.track h2{font-size:23px;margin:14px 0 4px}.track .artist{color:var(--muted);margin:0 0 12px}.preview{width:100%;height:80px;border:0;border-radius:12px;background:#000;margin:10px 0}.actions{display:flex;justify-content:center;gap:24px;margin:18px 0}.swipe{width:68px;height:68px;border-radius:50%;font-size:27px;display:grid;place-items:center}.keep{background:#173f35;color:var(--green);border:1px solid #276c58}.remove{background:#48212a;color:#ff7388;border:1px solid #803344}.progress{height:8px;background:#333340;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#ff5470,#9c77ff);width:0}.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:8px 0}
+#summary{white-space:pre-wrap;color:#ddd;font-size:14px}.small{font-size:12px;color:var(--muted)}a{color:#c8a8ff}
+</style>
+</head>
+<body><main>
+<header class="top"><h1>Playlist Tinder <span aria-hidden="true">♫</span></h1><p>Seu YouTube Music, faixa por faixa.</p></header>
+<section class="panel" id="setup">
+<h2>Conectar playlist</h2>
+<p class="hint">Entre com sua conta Google e cole o link da playlist do YouTube Music. A ferramenta lista as faixas e permite manter ou remover cada uma. A remoção é aplicada à playlist do YouTube depois da confirmação final.</p>
+<label for="clientId">ID do cliente OAuth (configuração única)</label>
+<input class="field" id="clientId" placeholder="Cole aqui o ID que termina em .apps.googleusercontent.com">
+<div class="row"><button class="primary" id="login">Salvar ID e entrar com Google</button></div>
+<label for="playlist">Link ou ID da playlist</label>
+<input class="field" id="playlist" placeholder="https://music.youtube.com/playlist?list=PL...">
+<div class="row"><button id="load" class="secondary" disabled>Carregar playlist</button><button id="logout" class="secondary" disabled>Sair</button></div>
+<p class="hint">Você não precisa editar o arquivo. Basta colar aqui seu ID OAuth uma única vez. O navegador pode guardar esse ID neste dispositivo.</p>
+</section>
+<div id="status" role="status"></div>
+<section class="panel hidden" id="review">
+<div class="stats"><span id="count">0 músicas</span><span id="decisions">0 decididas</span></div><div class="progress"><div id="bar"></div></div>
+<div class="track">
+<img class="art" id="art" alt="Capa da música">
+<h2 id="title">Carregando...</h2><p class="artist" id="artist"></p>
+<iframe class="preview" id="player" title="Prévia da música" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<p class="hint">← manter · remover →</p>
+<div class="actions"><button class="swipe keep" id="keep" aria-label="Manter">←</button><button class="swipe remove" id="remove" aria-label="Remover">→</button></div>
+</div>
+<div class="row"><button class="secondary" id="undo">Desfazer última</button><button class="secondary" id="skip">Pular por enquanto</button></div>
+</section>
+<section class="panel hidden" id="finish">
+<h2>Revisão concluída</h2><p id="summary"></p>
+<p class="hint">As faixas marcadas para remoção só serão apagadas depois de você confirmar abaixo.</p>
+<button class="primary" id="apply">Confirmar remoções na playlist</button>
+<button class="secondary" id="back">Voltar à revisão</button>
+</section>
+<section class="panel" style="margin-top:16px">
+<h3>Como configurar (uma vez)</h3>
+<ol class="hint">
+<li>Acesse <a href="https://console.cloud.google.com/" target="_blank" rel="noreferrer">Google Cloud Console</a> e crie um projeto.</li>
+<li>Ative <b>YouTube Data API v3</b>.</li>
+<li>Configure a tela de consentimento OAuth e crie um ID do cliente OAuth do tipo <b>Aplicativo da Web</b>. Em “Origens JavaScript autorizadas”, adicione o endereço onde este arquivo será hospedado (por exemplo, seu domínio). Para teste local, use um servidor local, não abra o arquivo com duplo clique.</li>
+<li>Copie o ID do cliente e cole no campo desta página. Não é necessário editar o código.</li>
+<li>Em “Origens JavaScript autorizadas”, adicione exatamente <code>http://localhost:8765</code>. Se o app OAuth estiver em modo de teste, adicione sua conta Google como usuário de teste.</li>
+</ol>
+<p class="hint">Este protótipo usa a API oficial do YouTube. O Google pode exigir configuração/verificação do consentimento. Nunca compartilhe seu segredo OAuth; este app usa apenas o ID público do cliente.</p>
+</section>
+</main>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+let CLIENT_ID = "";
+const SCOPE = "https://www.googleapis.com/auth/youtube";
+let tokenClient, accessToken=null, tracks=[], index=0, decisions=[], history=[];
+const $=id=>document.getElementById(id);
+function status(t){$("status").textContent=t}
+function extractId(v){try{const u=new URL(v);return u.searchParams.get("list")||v.trim()}catch{return v.trim()}}
+function authReady(){return CLIENT_ID.includes(".apps.googleusercontent.com")}
+window.addEventListener("load",()=>{
+ const saved=localStorage.getItem("ytm_playlist_tinder_client_id")||"";
+ $("clientId").value=saved;
+ if(saved){CLIENT_ID=saved;status("ID OAuth carregado. Entre com Google para conectar.");}
+ else status("Cole seu ID OAuth no campo acima. Você só precisa fazer isso uma vez neste navegador.");
+});
+$("login").onclick=()=>{
+ CLIENT_ID=$("clientId").value.trim();
+ if(!authReady()){status("Esse ID não parece válido. Confira se termina em .apps.googleusercontent.com.");return}
+ localStorage.setItem("ytm_playlist_tinder_client_id",CLIENT_ID);
+ tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPE,callback:r=>{
+  if(r.error){status("Não foi possível entrar: "+r.error);return}
+  accessToken=r.access_token;$("load").disabled=false;$("logout").disabled=false;status("Conta conectada. Cole o link da playlist.");
+ }});
+ tokenClient.requestAccessToken();
+};
+$("logout").onclick=()=>{if(accessToken)google.accounts.oauth2.revoke(accessToken);accessToken=null;tracks=[];decisions=[];$("load").disabled=true;$("logout").disabled=true;$("review").classList.add("hidden");$("finish").classList.add("hidden");status("Você saiu da conta.");};
+async function api(path,opts={}){const r=await fetch("https://www.googleapis.com/youtube/v3/"+path,{...opts,headers:{Authorization:"Bearer "+accessToken,"Content-Type":"application/json",...(opts.headers||{})}});const j=await r.json();if(!r.ok)throw Error(j.error?.message||"Erro na API");return j}
+$("load").onclick=async()=>{
+ try{const id=extractId($("playlist").value);if(!id)throw Error("Cole o link da playlist.");status("Carregando músicas...");
+ let all=[],pageToken="";do{const q=new URLSearchParams({part:"snippet,contentDetails",playlistId:id,maxResults:"50"});if(pageToken)q.set("pageToken",pageToken);const data=await api("playlistItems?"+q);all.push(...(data.items||[]));pageToken=data.nextPageToken||"";}while(pageToken);
+ tracks=all.map(x=>({itemId:x.id,videoId:x.contentDetails?.videoId,title:x.snippet?.title||"Faixa sem título",artist:x.snippet?.videoOwnerChannelTitle||x.snippet?.channelTitle||"Artista não informado",thumb:x.snippet?.thumbnails?.high?.url||x.snippet?.thumbnails?.medium?.url||x.snippet?.thumbnails?.default?.url||""})).filter(x=>x.videoId);
+ if(!tracks.length)throw Error("Não encontrei faixas nessa playlist. Verifique o link e as permissões.");
+ index=0;decisions=Array(tracks.length).fill(null);history=[];$("setup").classList.add("hidden");$("review").classList.remove("hidden");$("finish").classList.add("hidden");render();status("");
+ }catch(e){status("Erro: "+e.message)}
+};
+function render(){
+ const done=decisions.filter(x=>x!==null).length, t=tracks[index];
+ if(!t){$("review").classList.add("hidden");$("finish").classList.remove("hidden");const rm=decisions.filter(x=>x==="remove").length;$("summary").textContent=`${tracks.length} músicas analisadas.\n${tracks.length-rm} para manter.\n${rm} para remover.`;return}
+ $("count").textContent=`Música ${index+1} de ${tracks.length}`;$("decisions").textContent=`${done} decididas`;$("bar").style.width=(done/tracks.length*100)+"%";
+ $("art").src=t.thumb;$("title").textContent=t.title;$("artist").textContent=t.artist;
+ $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?rel=0&playsinline=1";
+}
+function decide(v){if(!tracks[index])return;history.push({index,value:decisions[index]});decisions[index]=v;index++;render()}
+$("keep").onclick=()=>decide("keep");$("remove").onclick=()=>decide("remove");
+// Gestos: arrastar para a esquerda mantém; para a direita marca para remover.
+let swipeStartX=null;
+$("art").addEventListener("touchstart",e=>{swipeStartX=e.changedTouches[0].clientX},{passive:true});
+$("art").addEventListener("touchend",e=>{
+ if(swipeStartX===null)return;
+ const dx=e.changedTouches[0].clientX-swipeStartX;swipeStartX=null;
+ if(Math.abs(dx)>65)decide(dx<0?"keep":"remove");
+},{passive:true});
+$("skip").onclick=()=>{if(index<tracks.length)index++;render()};
+$("undo").onclick=()=>{const h=history.pop();if(!h){status("Nada para desfazer.");return}index=h.index;decisions[h.index]=h.value;render()};
+$("back").onclick=()=>{$("finish").classList.add("hidden");$("review").classList.remove("hidden");index=Math.max(0,tracks.length-1);while(index>=0&&decisions[index]!==null)index--;if(index<0)index=tracks.length-1;render()};
+$("apply").onclick=async()=>{
+ const removals=tracks.filter((t,i)=>decisions[i]==="remove");
+ if(!removals.length){status("Nenhuma música marcada para remoção.");return}
+ if(!confirm(`Remover ${removals.length} música(s) desta playlist? Esta ação altera sua playlist no YouTube.`))return;
+ $("apply").disabled=true;let done=0;
+ try{for(const t of removals){await api("playlistItems?id="+encodeURIComponent(t.itemId),{method:"DELETE"});done++}
+ status(`${done} música(s) removida(s) da playlist.`);$("apply").textContent="Remoções aplicadas";
+ }catch(e){status(`Foram removidas ${done} de ${removals.length}. Erro: ${e.message}`);$("apply").disabled=false}
+};
+</script></body></html>
