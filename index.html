@@ -6,12 +6,12 @@
 <title>Playlist Tinder · YouTube Music</title>
 <style>
 :root{color-scheme:dark;--bg:#101014;--panel:#1c1c24;--muted:#a7a7b5;--text:#f7f7fb;--pink:#ff5470;--green:#43d6a0;--line:#333340}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#292039 0,#101014 55%);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-main{width:min(720px,100%);margin:auto;padding:24px 16px 48px}.top{text-align:center;margin:8px 0 22px}.top h1{margin:0;font-size:clamp(28px,6vw,42px)}.top p{color:var(--muted);margin:8px 0}
-.panel{background:#1b1b23dd;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 60px #0006}
+*{box-sizing:border-box}body{margin:0;background:#08080c;color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+main{width:min(720px,100%);margin:auto;padding:12px 12px 28px}.top{text-align:center;margin:8px 0 22px}.top h1{margin:0;font-size:clamp(28px,6vw,42px)}.top p{color:var(--muted);margin:8px 0}
+.panel{background:#15151c;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 60px #0006}
 button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;background:#eee;color:#15151a}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:#ff3158;color:white}.secondary{background:#333340;color:white}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.field{width:100%;padding:13px;border-radius:12px;border:1px solid #454552;background:#111118;color:white;margin:7px 0 12px}.hint{color:var(--muted);font-size:13px;line-height:1.5}.hidden{display:none!important}
-#status{margin:12px 0;color:#ddd;min-height:22px}.track{margin:16px auto 12px;max-width:440px;text-align:center}.swipe-stage{position:relative;width:min(100%,340px);margin:auto;touch-action:pan-y;user-select:none}.art{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;background:#30303a;box-shadow:0 14px 40px #0007;transition:transform .18s ease,opacity .18s ease;will-change:transform;pointer-events:none}.swipe-stamp{position:absolute;top:18px;padding:8px 13px;border:3px solid;border-radius:10px;font-weight:900;font-size:20px;letter-spacing:2px;opacity:0;pointer-events:none}.swipe-stamp.keep-stamp{left:14px;color:#43d6a0;border-color:#43d6a0;transform:rotate(-12deg)}.swipe-stamp.remove-stamp{right:14px;color:#ff7388;border-color:#ff7388;transform:rotate(12deg)}.track h2{font-size:23px;margin:14px 0 4px}.track .artist{color:var(--muted);margin:0 0 12px}.preview{width:100%;height:210px;border:0;border-radius:12px;background:#000;margin:10px 0}.actions{display:flex;justify-content:center;gap:24px;margin:18px 0}.swipe{width:68px;height:68px;border-radius:50%;font-size:27px;display:grid;place-items:center}.keep{background:#173f35;color:var(--green);border:1px solid #276c58}.remove{background:#48212a;color:#ff7388;border:1px solid #803344}.progress{height:8px;background:#333340;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#ff5470,#9c77ff);width:0}.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:8px 0}
-#summary{white-space:pre-wrap;color:#ddd;font-size:14px}.small{font-size:12px;color:var(--muted)}a{color:#c8a8ff}
+#status{margin:12px 0;color:#ddd;min-height:22px}.track{margin:8px auto 10px;max-width:560px;text-align:center}.swipe-stage{position:relative;width:min(100%,min(88vw,520px));margin:auto;touch-action:pan-y;user-select:none;overflow:visible}.art{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;background:#30303a;box-shadow:0 14px 40px #0007;transition:transform .18s ease,opacity .18s ease;will-change:transform;pointer-events:none}.swipe-stamp{position:absolute;top:18px;padding:8px 13px;border:3px solid;border-radius:10px;font-weight:900;font-size:20px;letter-spacing:2px;opacity:0;pointer-events:none}.swipe-stamp.keep-stamp{left:14px;color:#43d6a0;border-color:#43d6a0;transform:rotate(-12deg)}.swipe-stamp.remove-stamp{right:14px;color:#ff7388;border-color:#ff7388;transform:rotate(12deg)}.track h2{font-size:23px;margin:14px 0 4px}.track .artist{color:var(--muted);margin:0 0 12px}.preview{width:100%;height:116px;border:0;border-radius:14px;background:#000;margin:10px 0}.actions{display:none}.swipe{width:68px;height:68px;border-radius:50%;font-size:27px;display:grid;place-items:center}.keep{background:#173f35;color:var(--green);border:1px solid #276c58}.remove{background:#48212a;color:#ff7388;border:1px solid #803344}.progress{height:8px;background:#333340;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#ff5470,#9c77ff);width:0}.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:8px 0}
+#summary{white-space:pre-wrap;color:#ddd;font-size:14px}.small{font-size:12px;color:var(--muted)}a{color:#c8a8ff}.meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;color:#c3c3ce;font-size:13px;margin:8px 0 12px}.meta span{background:#22222b;padding:6px 10px;border-radius:999px}.review-shell{border:0;background:transparent;box-shadow:none;padding:0}.review-shell .stats{padding:4px 4px}.review-shell .track{padding:0 0 8px}.track h2{font-size:clamp(20px,5vw,27px);margin:12px 0 3px}.track .artist{font-size:15px}.swipe-stage.swiping .art{filter:brightness(.88)}.player-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#9d9daa;text-align:left;margin:12px 2px 4px}.subactions{display:flex;justify-content:center;gap:10px;margin:8px 0 12px}.subactions button{background:#24242e;color:#eee;border:1px solid #3c3c49;font-size:13px}.swipe-stamp{z-index:2}
 </style>
 </head>
 <body><main>
@@ -28,20 +28,21 @@ button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;f
 <p class="hint">Você não precisa editar o arquivo. Basta colar aqui seu ID OAuth uma única vez. O navegador pode guardar esse ID neste dispositivo.</p>
 </section>
 <div id="status" role="status"></div>
-<section class="panel hidden" id="review">
+<section class="panel hidden review-shell" id="review">
 <div class="stats"><span id="count">0 músicas</span><span id="decisions">0 decididas</span></div><div class="progress"><div id="bar"></div></div>
 <div class="track">
 <div class="swipe-stage" id="swipeStage"><img class="art" id="art" alt="Capa da música"><span class="swipe-stamp keep-stamp" id="keepStamp">MANTER</span><span class="swipe-stamp remove-stamp" id="removeStamp">REMOVER</span></div>
 <h2 id="title">Carregando...</h2><p class="artist" id="artist"></p>
+<div class="meta"><span id="album">Álbum não informado</span><span id="channel">YouTube Music</span></div>
+<div class="player-label">Tocando nesta página</div>
 <iframe class="preview" id="player" title="Player da música" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-<p class="hint">Arraste a capa: ← manter · remover →. Use o player abaixo para ouvir sem sair do site.</p>
-<div class="actions"><button class="swipe keep" id="keep" aria-label="Manter">←</button><button class="swipe remove" id="remove" aria-label="Remover">→</button></div>
+<p class="hint">Deslize para a esquerda para manter ou para a direita para marcar para remover. A playlist só será alterada no final.</p>
+<div class="subactions"><button id="unsure">Ainda estou em dúvida</button><button id="undo">Desfazer</button></div>
 </div>
-<div class="row"><button class="secondary" id="undo">Desfazer última</button><button class="secondary" id="skip">Pular por enquanto</button></div>
 </section>
 <section class="panel hidden" id="finish">
 <h2>Revisão concluída</h2><p id="summary"></p>
-<p class="hint">As faixas marcadas para remoção só serão apagadas depois de você confirmar abaixo.</p>
+<p class="hint">Nada foi removido ainda. As faixas marcadas serão removidas da playlist original somente quando você confirmar aqui. As músicas em dúvida continuam na playlist.</p>
 <button class="primary" id="apply">Confirmar remoções na playlist</button>
 <button class="secondary" id="back">Voltar à revisão</button>
 </section>
@@ -54,7 +55,7 @@ button,input{font:inherit}button{border:0;border-radius:14px;padding:12px 16px;f
 <li>Copie o ID do cliente e cole no campo desta página. Não é necessário editar o código.</li>
 <li>Em “Origens JavaScript autorizadas”, adicione exatamente <code>http://localhost:8765</code>. Se o app OAuth estiver em modo de teste, adicione sua conta Google como usuário de teste.</li>
 </ol>
-<p class="hint">Este protótipo usa a API oficial do YouTube. O Google pode exigir configuração/verificação do consentimento. Nunca compartilhe seu segredo OAuth; este app usa apenas o ID público do cliente.</p>
+<p class="hint">O player fica incorporado na página. Navegadores podem bloquear reprodução automática com áudio até você tocar em Play na primeira música; depois, a próxima faixa tenta iniciar automaticamente. Nem todo vídeo permite reprodução incorporada. O YouTube Data API não fornece o álbum de forma confiável, então essa informação pode aparecer como não informada.</p><p class="hint">Este protótipo usa a API oficial do YouTube. Nunca compartilhe seu segredo OAuth.</p>
 </section>
 </main>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -87,7 +88,7 @@ async function api(path,opts={}){const r=await fetch("https://www.googleapis.com
 $("load").onclick=async()=>{
  try{const id=extractId($("playlist").value);if(!id)throw Error("Cole o link da playlist.");status("Carregando músicas...");
  let all=[],pageToken="";do{const q=new URLSearchParams({part:"snippet,contentDetails",playlistId:id,maxResults:"50"});if(pageToken)q.set("pageToken",pageToken);const data=await api("playlistItems?"+q);all.push(...(data.items||[]));pageToken=data.nextPageToken||"";}while(pageToken);
- tracks=all.map(x=>({itemId:x.id,videoId:x.contentDetails?.videoId,title:x.snippet?.title||"Faixa sem título",artist:x.snippet?.videoOwnerChannelTitle||x.snippet?.channelTitle||"Artista não informado",thumb:x.snippet?.thumbnails?.high?.url||x.snippet?.thumbnails?.medium?.url||x.snippet?.thumbnails?.default?.url||""})).filter(x=>x.videoId);
+ tracks=all.map(x=>({itemId:x.id,videoId:x.contentDetails?.videoId,title:x.snippet?.title||"Faixa sem título",artist:x.snippet?.videoOwnerChannelTitle||x.snippet?.channelTitle||"Artista não informado",album:"Álbum não informado pelo YouTube",channel:x.snippet?.channelTitle||"YouTube",thumb:x.snippet?.thumbnails?.high?.url||x.snippet?.thumbnails?.medium?.url||x.snippet?.thumbnails?.default?.url||""})).filter(x=>x.videoId);
  // Embaralha a ordem de análise sem alterar a ordem original da playlist.
  for(let i=tracks.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[tracks[i],tracks[j]]=[tracks[j],tracks[i]];}
  if(!tracks.length)throw Error("Não encontrei faixas nessa playlist. Verifique o link e as permissões.");
@@ -96,14 +97,20 @@ $("load").onclick=async()=>{
 };
 function render(){
  const done=decisions.filter(x=>x!==null).length, t=tracks[index];
- if(!t){$("review").classList.add("hidden");$("finish").classList.remove("hidden");const rm=decisions.filter(x=>x==="remove").length;$("summary").textContent=`${tracks.length} músicas analisadas.\n${tracks.length-rm} para manter.\n${rm} para remover.`;return}
+ if(!t){
+  $("review").classList.add("hidden");$("finish").classList.remove("hidden");
+  const rm=decisions.filter(x=>x==="remove").length, unsure=decisions.filter(x=>x===null).length;
+  $("summary").textContent=`${tracks.length} músicas analisadas.\\n${tracks.length-rm-unsure} para manter.\\n${rm} marcadas para remover.\\n${unsure} deixadas em dúvida (continuam na playlist).`;
+  $("player").src="about:blank";return;
+ }
  $("count").textContent=`Música ${index+1} de ${tracks.length}`;$("decisions").textContent=`${done} decididas`;$("bar").style.width=(done/tracks.length*100)+"%";
  $("art").src=t.thumb;$("title").textContent=t.title;$("artist").textContent=t.artist;
- $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?rel=0&playsinline=1&controls=1&iv_load_policy=3";
+ $("album").textContent=t.album;$("channel").textContent=t.channel;
+ // O navegador pode bloquear autoplay com áudio até o usuário tocar em Play uma vez.
+ $("player").src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(t.videoId)+"?autoplay=1&mute=0&playsinline=1&controls=1&rel=0&enablejsapi=1";
  $("art").style.transform="translateX(0) rotate(0)";$("art").style.opacity="1";$("keepStamp").style.opacity="0";$("removeStamp").style.opacity="0";
 }
 function decide(v){if(!tracks[index])return;history.push({index,value:decisions[index]});decisions[index]=v;index++;render()}
-$("keep").onclick=()=>decide("keep");$("remove").onclick=()=>decide("remove");
 // Arraste real da capa: esquerda = manter; direita = remover.
 let dragStartX=null, dragDelta=0, dragging=false;
 const stage=$("swipeStage"), art=$("art");
@@ -129,7 +136,7 @@ function finishDrag(){
 }
 stage.addEventListener("pointerup",finishDrag);
 stage.addEventListener("pointercancel",finishDrag);
-$("skip").onclick=()=>{if(index<tracks.length)index++;render()};
+$("unsure").onclick=()=>{if(!tracks[index])return;history.push({index,value:decisions[index]});decisions[index]=null;index++;render()};
 $("undo").onclick=()=>{const h=history.pop();if(!h){status("Nada para desfazer.");return}index=h.index;decisions[h.index]=h.value;render()};
 $("back").onclick=()=>{$("finish").classList.add("hidden");$("review").classList.remove("hidden");index=Math.max(0,tracks.length-1);while(index>=0&&decisions[index]!==null)index--;if(index<0)index=tracks.length-1;render()};
 $("apply").onclick=async()=>{
