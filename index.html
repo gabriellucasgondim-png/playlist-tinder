@@ -16,7 +16,7 @@ button{border:0;cursor:pointer;color:inherit}
 a{color:#c9a9ff}
 
 /* ---------- Telas de configuração / fim ---------- */
-.screen{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:16px}
+.screen{position:relative;z-index:2;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:16px}
 .brand{text-align:center}
 .brand .mark{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#ff7d9a;font-weight:800}
 .brand h1{margin:6px 0 4px;font-size:clamp(30px,8vw,42px);letter-spacing:-1.5px}
@@ -37,7 +37,7 @@ details ol{padding-left:18px}
 #status{min-height:20px;text-align:center;color:#ddd;font-size:14px;max-width:520px}
 
 /* ---------- Revisão ---------- */
-#ambient{position:fixed;inset:-40px;background-size:cover;background-position:center;filter:blur(60px) brightness(.35) saturate(1.3);transform:scale(1.1);transition:background-image .4s;z-index:0}
+#ambient{pointer-events:none;opacity:0;position:fixed;inset:-40px;background-size:cover;background-position:center;filter:blur(60px) brightness(.35) saturate(1.3);transform:scale(1.1);transition:background-image .4s;z-index:0}
 #review{position:fixed;inset:0;z-index:1;display:flex;justify-content:center;align-items:center}
 .deck{position:relative;width:100%;max-width:480px;height:100dvh;overflow:hidden;background:#000;touch-action:pan-y}
 @media (min-width:600px){.deck{height:min(100dvh - 32px,900px);border-radius:28px;box-shadow:0 30px 90px #000a}}
@@ -238,6 +238,7 @@ details ol{padding-left:18px}
 <script>
 const $ = id => document.getElementById(id);
 const SCOPE = "https://www.googleapis.com/auth/youtube";
+const DEFAULT_CLIENT_ID = "571672409828-ie7p8ci55rnqu8okeojgmka9c1cfcnfj.apps.googleusercontent.com";
 const LS_CLIENT = "ytm_playlist_tinder_client_id";
 const LS_LIST = "ytm_playlist_tinder_last_playlist";
 const LS_REVIEWED = "ytm_playlist_tinder_reviewed";
@@ -285,11 +286,11 @@ function parseDescription(desc){
 
 /* ---------------- login ---------------- */
 window.addEventListener("load", () => {
-  const saved = lsGet(LS_CLIENT, "");
-  $("clientId").value = saved;
+  CLIENT_ID = DEFAULT_CLIENT_ID;
+  $("clientId").value = CLIENT_ID;
+  $("clientIdBox").classList.add("hidden");
   $("playlist").value = lsGet(LS_LIST, "");
-  if (saved) { CLIENT_ID = saved; $("clientIdBox").classList.add("hidden"); status("Entre com Google para conectar."); }
-  else status("Cole seu ID OAuth no campo acima (só uma vez neste navegador).");
+  status("Toque em “Entrar com Google” para conectar.");
 });
 
 function ensureTokenClient(){
