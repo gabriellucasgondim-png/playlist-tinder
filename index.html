@@ -97,6 +97,40 @@ details ol{padding-left:18px}
 
 #finish .panel{text-align:center}
 #summary{white-space:pre-line;font-size:16px;line-height:1.8;margin:12px 0}
+
+/* ---------- Abas da tela inicial ---------- */
+.tabs{display:flex;gap:8px;margin:6px 0 8px}
+.tab{flex:1;padding:11px 8px;border-radius:14px;background:#221f2b;color:var(--muted);font-weight:700;font-size:13.5px;border:1px solid transparent}
+.tab.on{background:#2b1620;color:#fff;border-color:var(--accent)}
+
+/* ---------- Duplicadas e versões ---------- */
+#dups{position:fixed;inset:0;z-index:3;display:flex;justify-content:center;background:var(--bg)}
+.dwrap{position:relative;width:100%;max-width:520px;height:100dvh;display:flex;flex-direction:column}
+.dtop{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 12px) 16px 10px;border-bottom:1px solid var(--line);background:#0b0a0f}
+.dtop .prog{flex:1;min-width:0}
+.dtop .count{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;margin-bottom:6px}
+.dscroll{flex:1;overflow-y:auto;padding:18px 16px 24px;-webkit-overflow-scrolling:touch}
+.dhead .mark{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#ff7d9a;font-weight:800}
+.dhead h2{margin:6px 0 2px;font-size:clamp(22px,6vw,28px);letter-spacing:-.6px;line-height:1.15}
+.dhead .dartist{margin:0 0 4px;color:#e7e2ee;font-weight:600}
+.vc{position:relative;display:flex;gap:12px;padding:12px;border-radius:18px;border:2px solid var(--line);background:var(--panel);margin-bottom:12px;cursor:pointer;transition:border-color .15s,opacity .15s}
+.vc.keep{border-color:var(--keep)}
+.vc.remove{border-color:#ff4d6d66;opacity:.6}
+.vthumb{width:88px;height:88px;border-radius:12px;object-fit:cover;flex:none;background:#000}
+.vinfo{flex:1;min-width:0}
+.vtitle{font-weight:700;line-height:1.25;padding-right:74px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.vartist{color:var(--muted);font-size:13px;margin:2px 0 7px}
+.vc .chips{gap:5px}.vc .chips span{font-size:11.5px;padding:4px 9px}
+.vstate{position:absolute;top:10px;right:10px;font-size:11px;font-weight:800;letter-spacing:.8px;padding:4px 9px;border-radius:999px}
+.vc.keep .vstate{background:#3fe0a52e;color:var(--keep)}
+.vc.remove .vstate{background:#ff4d6d33;color:var(--remove)}
+.vbtns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.vbtns button,.vbtns a{height:36px;border-radius:999px;padding:0 14px;background:#2b2835;color:#fff;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.vbtns .only{background:#173f35;color:var(--keep)}
+.vbtns .playing{background:linear-gradient(110deg,#ff2f61,#ff6b57)}
+.dfoot{display:flex;gap:10px;padding:12px 16px calc(env(safe-area-inset-bottom) + 16px);border-top:1px solid var(--line);background:#0b0a0f}
+.dfoot .btn{flex:1}
+.ddone{text-align:center;padding:30px 6px;line-height:1.9;font-size:16px;white-space:pre-line}
 </style>
 </head>
 <body>
@@ -122,6 +156,11 @@ details ol{padding-left:18px}
     <div class="row"><button class="btn primary" id="login">Entrar com Google</button></div>
 
     <div style="height:14px"></div>
+    <div class="tabs" role="tablist">
+      <button class="tab on" id="tabSwipe" role="tab">👆 Deslizar músicas</button>
+      <button class="tab" id="tabDups" role="tab">🧬 Duplicadas e versões</button>
+    </div>
+    <p class="hint" id="modeHint" style="margin-top:0"></p>
     <label for="playlist">Link ou ID da playlist</label>
     <input class="field" id="playlist" placeholder="https://music.youtube.com/playlist?list=PL..." autocomplete="off">
     <div class="row">
@@ -203,6 +242,34 @@ details ol{padding-left:18px}
   </div>
 </section>
 
+<!-- ========== Duplicadas e versões ========== -->
+<section id="dups" class="hidden">
+  <div class="dwrap">
+    <div class="dtop">
+      <button class="savebtn" id="dupHome" aria-label="Voltar ao início" title="Voltar ao início">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="prog">
+        <div class="count"><span id="dupCount">Grupo 0 de 0</span><span id="dupDecided">0 revisados</span></div>
+        <div class="bar"><div id="dupBar"></div></div>
+      </div>
+      <button class="savebtn" id="dupToggle" aria-label="Player embutido ligado" title="Ligar/desligar o player embutido (com anúncios)">
+        <svg class="dIcOn" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+        <svg class="dIcOff hidden" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>
+      </button>
+      <button class="savebtn" id="dupSave" aria-label="Salvar remoções na playlist" title="Salvar remoções na playlist" disabled>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 3h11l4 4v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 3v5h7V3"/><rect x="7" y="13" width="10" height="8"/></svg>
+        <span class="badge hidden" id="dupBadge">0</span>
+      </button>
+    </div>
+    <div class="dscroll" id="dupScroll">
+      <div class="dhead" id="dupHead"></div>
+      <div id="dupList"></div>
+    </div>
+    <div class="dfoot" id="dupFoot"></div>
+  </div>
+</section>
+
 <!-- Player do YouTube (invisível, só áudio) -->
 <div id="ytWrap" style="position:fixed;width:200px;height:200px;left:-320px;bottom:0;opacity:.01;pointer-events:none"><div id="yt"></div></div>
 
@@ -243,6 +310,9 @@ const LS_CLIENT = "ytm_playlist_tinder_client_id";
 const LS_LIST = "ytm_playlist_tinder_last_playlist";
 const LS_REVIEWED = "ytm_playlist_tinder_reviewed";
 const LS_EMBED = "ytm_playlist_tinder_embed";
+const LS_DUPS = "ytm_playlist_tinder_dups";
+const LS_MODE = "ytm_playlist_tinder_mode";
+let mode = lsGet(LS_MODE, "swipe") === "dups" ? "dups" : "swipe";
 let embedOn = lsGet(LS_EMBED, "1") !== "0";
 
 let CLIENT_ID = "", tokenClient = null, accessToken = null, tokenWaiter = null;
@@ -337,16 +407,18 @@ function showScreen(name){
   $("setup").classList.toggle("hidden", name !== "setup");
   $("review").classList.toggle("hidden", name !== "review");
   $("finish").classList.toggle("hidden", name !== "finish");
+  $("dups").classList.toggle("hidden", name !== "dups");
   $("ambient").style.opacity = name === "review" ? 1 : 0;
   if (name !== "review") stopAudio();
+  if (name !== "dups") dupPlaying = null;
   if (name === "setup") updateResetBtn();
 }
 function updateResetBtn(){
-  const n = (reviewedAll()[playlistId] || []).length;
+  const n = (reviewedAll()[playlistId] || []).length + (dupsReviewedAll()[playlistId] || []).length;
   $("resetReviewed").classList.toggle("hidden", !n);
   $("resetReviewed").textContent = `Zerar revisões salvas (${n})`;
 }
-$("resetReviewed").onclick = () => { const a = reviewedAll(); delete a[playlistId]; lsSet(LS_REVIEWED, JSON.stringify(a)); updateResetBtn(); toast("Revisões zeradas. Carregue a playlist novamente."); };
+$("resetReviewed").onclick = () => { const a = reviewedAll(); delete a[playlistId]; lsSet(LS_REVIEWED, JSON.stringify(a)); const d = dupsReviewedAll(); delete d[playlistId]; lsSet(LS_DUPS, JSON.stringify(d)); updateResetBtn(); toast("Revisões zeradas. Carregue a playlist novamente."); };
 
 /* ---------------- carregar playlist ---------------- */
 $("load").onclick = async () => {
@@ -372,6 +444,13 @@ $("load").onclick = async () => {
       thumb: pickThumb(x.snippet?.thumbnails)
     })).filter(x => x.videoId);
     if (!list.length) throw Error("Não encontrei faixas nessa playlist. Verifique o link e as permissões.");
+
+    if (mode === "dups") {
+      status("Buscando detalhes das músicas…");
+      await enrich(list);
+      startDups(list, id);
+      return;
+    }
 
     // Pula o que você já revisou e decidiu manter em sessões anteriores.
     const done = new Set(reviewedAll()[id] || []);
@@ -558,13 +637,191 @@ function applyEmbedUI(){
   $("playerToggle").classList.toggle("off", !embedOn);
   $("playerToggle").setAttribute("aria-label", embedOn ? "Player embutido ligado" : "Player embutido desligado");
   $("ytmBtn").classList.toggle("hidden", embedOn);
+  document.querySelectorAll(".dIcOn").forEach(e => e.classList.toggle("hidden", !embedOn));
+  document.querySelectorAll(".dIcOff").forEach(e => e.classList.toggle("hidden", embedOn));
+  $("dupToggle").classList.toggle("off", !embedOn);
+  $("dupToggle").setAttribute("aria-label", embedOn ? "Player embutido ligado" : "Player embutido desligado");
 }
-$("playerToggle").onclick = () => {
+function toggleEmbed(){
   embedOn = !embedOn; lsSet(LS_EMBED, embedOn ? "1" : "0"); applyEmbedUI();
-  if (embedOn) { toast("Player embutido ligado (pode ter anúncios)", 2800); if (tracks[index]) play(tracks[index]); }
+  const inReview = !$("review").classList.contains("hidden"), inDups = !$("dups").classList.contains("hidden");
+  if (embedOn) { toast("Player embutido ligado (pode ter anúncios)", 2800); if (inReview && tracks[index]) play(tracks[index]); }
   else { stopAudio(); $("pausedIcon").classList.add("hidden"); $("tapPlay").classList.add("hidden"); toast("Desligado. Use o botão do YouTube Music para ouvir sem anúncios.", 3800); }
-};
+  if (inDups) renderDup(true);
+}
+$("playerToggle").onclick = toggleEmbed;
+$("dupToggle").onclick = toggleEmbed;
 applyEmbedUI();
+
+/* ---------------- abas da tela inicial ---------------- */
+function applyMode(){
+  $("tabSwipe").classList.toggle("on", mode === "swipe");
+  $("tabDups").classList.toggle("on", mode === "dups");
+  $("modeHint").textContent = mode === "swipe"
+    ? "Ouça cada música e deslize: direita mantém, esquerda remove."
+    : "Encontra músicas repetidas e versões diferentes da mesma faixa (ao vivo, remix, remasterizada…) e deixa você escolher qual manter.";
+  $("load").textContent = mode === "swipe" ? "Carregar playlist" : "Procurar duplicadas";
+}
+$("tabSwipe").onclick = () => { mode = "swipe"; lsSet(LS_MODE, mode); applyMode(); };
+$("tabDups").onclick = () => { mode = "dups"; lsSet(LS_MODE, mode); applyMode(); };
+applyMode();
+
+/* ---------------- duplicadas e versões ---------------- */
+let dupGroups = [], dupIndex = 0, dupRemove = new Set(), dupPlaying = null;
+function dupsReviewedAll(){ try { return JSON.parse(lsGet(LS_DUPS, "{}")) || {}; } catch { return {}; } }
+function norm(s){ return (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+function artistKey(a){
+  let x = norm(a).split(/,|&|;|\bfeat\b|\bft\b| and | e | x /)[0];
+  x = x.replace(/\b(vevo|official|oficial|music|topic|records|tv)\b/g, " ").replace(/[^a-z0-9]+/g, " ").trim();
+  return x || norm(a).replace(/[^a-z0-9]/g, "");
+}
+const VERSION_WORDS = "remaster\\w*|remasteriz\\w*|live|ao vivo|version|versao|mix|remix|edit|acoustic|acustic\\w*|instrumental|demo|mono|stereo|deluxe|bonus|session\\w*|cover|karaoke|sped up|slowed|reverb";
+function baseKey(title, artist){
+  let t = norm(title).replace(/\([^)]*\)|\[[^\]]*\]|\{[^}]*\}/g, " ");
+  const ak = artistKey(artist);
+  const m = t.match(/^(.+?)\s[-–—]\s(.+)$/);
+  if (m) {
+    const left = m[1].replace(/[^a-z0-9]+/g, " ").trim();
+    if (left && ak && (left === ak || left.includes(ak) || ak.includes(left))) t = m[2];
+  }
+  t = t.replace(new RegExp("\\s[-–—|]\\s.*\\b(" + VERSION_WORDS + "|lyrics?|letra|official|oficial|video|audio|clipe|from)\\b.*$"), " ");
+  t = t.replace(/\b(official (music )?video|official audio|lyric video|video oficial|clipe oficial|audio oficial|videoclipe|lyrics?|letra)\b/g, " ");
+  t = t.replace(/\b(feat|ft|featuring|participacao)\.?\s.*$/, " ");
+  return t.replace(/[^a-z0-9]+/g, " ").trim();
+}
+function groupKey(t){
+  const b = baseKey(t.title, t.artist); if (b.length < 2) return "";
+  return b + "|" + artistKey(t.artist);
+}
+function versionLabel(t){
+  const parts = []; const re = /\(([^)]*)\)|\[([^\]]*)\]/g; let m;
+  while ((m = re.exec(t.title))) parts.push((m[1] || m[2]).trim());
+  const d = t.title.match(/\s[-–—]\s(.+)$/);
+  if (d && new RegExp("(" + VERSION_WORDS + ")", "i").test(d[1])) parts.push(d[1].trim());
+  return parts.filter(Boolean).join(" · ");
+}
+function startDups(list, id){
+  const seen = new Set(dupsReviewedAll()[id] || []);
+  const map = new Map();
+  list.forEach(t => { const k = groupKey(t); if (!k) return; if (!map.has(k)) map.set(k, []); map.get(k).push(t); });
+  let groups = [...map].filter(([, v]) => v.length > 1).map(([key, items]) => ({ key, items }));
+  const total = groups.length;
+  groups = groups.filter(g => !seen.has(g.key));
+  if (!groups.length) {
+    status(total ? `Você já revisou os ${total} grupos de duplicadas. Use “Zerar revisões salvas” para ver de novo.` : "Não encontrei músicas repetidas nem versões diferentes nessa playlist.");
+    updateResetBtn(); return;
+  }
+  dupGroups = groups; dupIndex = 0; dupRemove = new Set(); dupPlaying = null; playlistId = id;
+  status(""); showScreen("dups"); renderDup();
+}
+function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function updatePlayIcons(){
+  document.querySelectorAll("#dupList .vplay").forEach(b => {
+    const on = b.dataset.vid === dupPlaying;
+    b.classList.toggle("playing", on); b.textContent = on ? "⏸ Pausar" : "▶ Ouvir";
+  });
+}
+function dupPlay(vid){
+  if (!ytReady) { toast("O player ainda está carregando. Tente de novo."); return; }
+  try {
+    if (dupPlaying === vid) { player.pauseVideo(); dupPlaying = null; }
+    else { loadVid(vid); dupPlaying = vid; }
+  } catch {}
+  updatePlayIcons();
+}
+function renderDup(keepScroll){
+  const sc = $("dupScroll"), y = sc.scrollTop;
+  stopAudio(); dupPlaying = null;
+  const done = dupIndex >= dupGroups.length, rm = dupRemove.size;
+  $("dupBadge").textContent = rm; $("dupBadge").classList.toggle("hidden", !rm);
+  $("dupSave").disabled = rm === 0; $("dupSave").classList.toggle("has", rm > 0);
+  $("dupCount").textContent = done ? "Concluído" : `Grupo ${dupIndex + 1} de ${dupGroups.length}`;
+  $("dupDecided").textContent = `${Math.min(dupIndex, dupGroups.length)} revisados`;
+  $("dupBar").style.width = (Math.min(dupIndex, dupGroups.length) / Math.max(1, dupGroups.length) * 100) + "%";
+  const head = $("dupHead"), list = $("dupList"), foot = $("dupFoot");
+  head.textContent = ""; list.textContent = ""; foot.textContent = "";
+
+  if (done) {
+    head.appendChild(el("div", "mark", "Revisão concluída"));
+    head.appendChild(el("h2", "", "Tudo certo 🎉"));
+    list.appendChild(el("div", "ddone", `${dupGroups.length} grupos revisados\n❌ ${rm} versão(ões) marcada(s) para remover\nAs outras continuam na playlist.`));
+    const back = el("button", "btn", "‹ Anterior"); back.onclick = dupPrev;
+    const save = el("button", "btn primary", rm ? `Salvar remoções (${rm})` : "Voltar ao início");
+    save.onclick = rm ? applyDupRemovals : () => { showScreen("setup"); status("Escolha uma playlist e carregue."); };
+    foot.append(back, save);
+  } else {
+    const g = dupGroups[dupIndex];
+    const titles = g.items.map(t => t.title.replace(/\s*[\(\[].*?[\)\]]/g, "").trim()).filter(Boolean).sort((a, b) => a.length - b.length);
+    head.appendChild(el("div", "mark", `${g.items.length} versões da mesma música`));
+    head.appendChild(el("h2", "", titles[0] || g.items[0].title));
+    head.appendChild(el("p", "dartist", g.items[0].artist));
+    head.appendChild(el("p", "hint", "Toque numa versão para alternar entre manter e remover. “Só esta” mantém ela e marca as outras para remover."));
+    const idCount = {}; g.items.forEach(t => idCount[t.videoId] = (idCount[t.videoId] || 0) + 1);
+    g.items.forEach(t => {
+      const card = el("div", "vc " + (dupRemove.has(t.itemId) ? "remove" : "keep"));
+      const img = el("img", "vthumb"); img.src = t.thumb; img.alt = ""; img.draggable = false;
+      const info = el("div", "vinfo");
+      info.appendChild(el("div", "vtitle", t.title));
+      info.appendChild(el("div", "vartist", t.artist));
+      const chips = el("div", "chips");
+      const lab = versionLabel(t);
+      [idCount[t.videoId] > 1 ? "🔁 Mesmo vídeo repetido" : "", lab ? "🏷 " + lab : "", t.album ? "💿 " + t.album : "", t.released ? "📅 " + fmtDate(t.released) : "", t.duration ? "⏱ " + t.duration : "", t.views ? "👁 " + t.views : ""]
+        .filter(Boolean).forEach(x => chips.appendChild(el("span", "", x)));
+      info.appendChild(chips);
+      const btns = el("div", "vbtns");
+      if (embedOn) {
+        const pb = el("button", "vplay", "▶ Ouvir"); pb.dataset.vid = t.videoId;
+        pb.onclick = e => { e.stopPropagation(); dupPlay(t.videoId); };
+        btns.appendChild(pb);
+      } else {
+        const a = el("a", "", "▶ YouTube Music"); a.href = "https://music.youtube.com/watch?v=" + encodeURIComponent(t.videoId);
+        a.target = "_blank"; a.rel = "noopener"; a.onclick = e => e.stopPropagation();
+        btns.appendChild(a);
+      }
+      const only = el("button", "only", "✓ Só esta");
+      only.onclick = e => { e.stopPropagation(); g.items.forEach(x => x === t ? dupRemove.delete(x.itemId) : dupRemove.add(x.itemId)); renderDup(true); };
+      btns.appendChild(only);
+      info.appendChild(btns);
+      const st = el("span", "vstate", dupRemove.has(t.itemId) ? "✕ REMOVER" : "✓ MANTER");
+      card.append(img, info, st);
+      card.onclick = () => { dupRemove.has(t.itemId) ? dupRemove.delete(t.itemId) : dupRemove.add(t.itemId); renderDup(true); };
+      list.appendChild(card);
+    });
+    const prev = el("button", "btn", "‹ Anterior"); prev.onclick = dupPrev; prev.disabled = dupIndex === 0;
+    const next = el("button", "btn primary", dupIndex === dupGroups.length - 1 ? "Confirmar e finalizar" : "Confirmar e próximo ›"); next.onclick = dupNext;
+    foot.append(prev, next);
+  }
+  sc.scrollTop = keepScroll ? y : 0;
+}
+function dupNext(){
+  const g = dupGroups[dupIndex]; if (!g) return;
+  const all = dupsReviewedAll(); const s = new Set(all[playlistId] || []); s.add(g.key);
+  all[playlistId] = [...s]; lsSet(LS_DUPS, JSON.stringify(all));
+  dupIndex++; renderDup();
+}
+function dupPrev(){ if (dupIndex > 0) { dupIndex--; renderDup(); } }
+$("dupHome").onclick = () => { showScreen("setup"); status("Escolha uma playlist e carregue."); };
+$("dupSave").onclick = () => applyDupRemovals();
+
+async function applyDupRemovals(){
+  const ids = [...dupRemove];
+  if (!ids.length) { toast("Nenhuma versão marcada para remover."); return; }
+  const ok = await confirmSheet("Salvar alterações?", `${ids.length} versão(ões) serão removidas da sua playlist no YouTube. Essa ação não pode ser desfeita aqui.`, "Remover da playlist");
+  if (!ok) return;
+  $("dupSave").disabled = true;
+  let done = 0;
+  try {
+    for (const id of ids) {
+      await api("playlistItems?id=" + encodeURIComponent(id), { method: "DELETE" });
+      dupRemove.delete(id); dupGroups.forEach(g => g.items = g.items.filter(t => t.itemId !== id));
+      done++; toast(`Removendo… ${done}/${ids.length}`, 4000);
+    }
+    toast(`✔ ${done} versão(ões) removida(s) da playlist`, 3500);
+  } catch (e) {
+    toast(`Removidas ${done} de ${ids.length}. Erro: ${e.message}`, 5000);
+  }
+  renderDup(true);
+}
 
 /* ---------------- salvar na playlist ---------------- */
 let sheetResolve = null;
