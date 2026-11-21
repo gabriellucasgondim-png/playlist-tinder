@@ -1,0 +1,31 @@
+# Playlist Tinder PWA
+
+## Publicar no GitHub Pages
+1. Extraia este ZIP.
+2. Envie **todos** os arquivos e a pasta `icons` para a raiz do repositório GitHub Pages (mantenha os nomes e pastas).
+3. Ative GitHub Pages em Settings → Pages → Deploy from a branch → branch `main` → folder `/ (root)`.
+4. Abra a URL HTTPS publicada no Chrome do Android.
+5. No Google Cloud, adicione a origem HTTPS exata do GitHub Pages em Authorized JavaScript origins. Exemplo: `https://SEUUSUARIO.github.io`. Não inclua `/nome-do-repositorio/` nesse campo.
+6. No Chrome, menu ⋮ → Instalar app (ou Adicionar à tela inicial).
+
+## Testar localmente
+Não abra `index.html` por `file://`. Rode um servidor local, por exemplo com VS Code + extensão Live Server, ou `python -m http.server 5500`. Acesse `http://localhost:5500` e cadastre essa origem no OAuth Client do Google Cloud.
+
+## Importante
+- O login Google e as chamadas da YouTube Data API precisam de internet. O cache offline guarda apenas a estrutura do app e os dados locais já salvos pelo próprio app; ele não torna a API do YouTube offline.
+- O Service Worker e a instalação PWA exigem HTTPS (localhost é aceito para desenvolvimento).
+- O Client ID existente foi mantido. Nenhum Client Secret deve ser colocado no HTML.
+
+
+## Firebase já configurado
+Este pacote está configurado para o projeto Firebase `playlist-tinder-87f2c`. O app usa Firebase Authentication com Google e Cloud Firestore. A configuração Web do Firebase fica no `index.html`; ela não contém senha nem chave privada.
+
+Para manter o uso sem custos, mantenha o projeto no plano Spark (gratuito). Não faça upgrade para Blaze nem vincule uma conta de faturamento. O uso dos serviços continua sujeito às cotas gratuitas do Firebase.
+
+## Atualizar uma instalação já existente
+1. Envie e substitua os arquivos do ZIP no mesmo repositório GitHub Pages.
+2. Aguarde a publicação terminar.
+3. Feche completamente o Playlist Tinder instalado e abra novamente com internet.
+4. Se ainda aparecer a versão antiga, abra o site no Chrome e atualize a página; o Service Worker foi atualizado para uma nova versão de cache.
+
+O login e a sincronização precisam ser testados com uma conta Google real no endereço publicado. A configuração foi inserida no código, mas este pacote não pode confirmar o estado do Firebase Console nem validar autenticação real sem um teste no seu aparelho.
